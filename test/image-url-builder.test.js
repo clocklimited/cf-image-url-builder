@@ -134,6 +134,8 @@ describe('image url builder', function () {
             assert.equal(image.crop('nope').url(), 'Error: no "nope" crop available for context "Thumbnail"')
           })
 
+          it('should include the filename in the URL')
+
         })
 
         describe('constrain()', function () {
