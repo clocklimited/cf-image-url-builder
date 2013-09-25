@@ -11,7 +11,7 @@
   "publishConfig": {
     "registry": "http://npm.clockte.ch"
   },
-  "main": "",
+  "main": "image-url-builder.js",
   "scripts": {
     "test": "./node_modules/.bin/mocha -R spec"
   },
