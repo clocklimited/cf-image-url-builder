@@ -4,20 +4,37 @@ Build URLs for your cf entity's images
 
 ## Installation
 
-      npm install cf-image-url-builder
+```
+npm install cf-image-url-builder
+```
 
 ## Usage
 
-```
-var createImageUrlBuilder = require('cf-image-url-builder')
-var images = createImageUrlBuilder('http://dr.io', 'salty', [], {})
+Instantiate like so:
 
-images.getImages('Thumbnail').forEach(function (img) {
-  img.crop('Square').constrain().url()
+```js
+var createImageUrlBuilder = require('cf-image-url-builder')
+var images = createImageUrlBuilder('http://dr.io', 'salty', images, contexts)
+```
+
+Where:
+- `images` is an array of raw image widget models (e.g. on the backend `article.images.widgets`,
+and on the frontend `article.get('images').widgets.map(function (widget) { return widget.toJSON() })`)
+- `contexts` is an object that represents which image widget model is chosen for each context (e.g. on
+the backend this is `article.crops` and on the frontend `article.get('crops')`)
+
+
+```js
+images.getImages('Hero').forEach(function (img) {
+  img.crop('Wide').constrain().url()
 })
 
-images.getImage('Thumbnail').crop('Square').constrain(width, height).url()
+images.getImage('Thumbnail').crop('Square').constrain(300, 200).url()
 ```
+
+## API
+
+TODO
 
 ## Credits
 Built by developers at [Clock](http://clock.co.uk).
