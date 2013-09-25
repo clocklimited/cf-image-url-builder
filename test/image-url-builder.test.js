@@ -94,7 +94,14 @@ describe('image url builder', function () {
           assert.equal(typeof crop.url, 'function')
         })
 
-        describe('url() (unconstrained)', function () {
+        it('should use the original un-cropped resource if no crop name is passed', function () {
+          var images = createUrlBuilder(darkroomUrl, darkroomSalt, imageWidgets, mixedContexts)
+            , crop = images.getImage('Thumbnail').crop()
+
+          assert(crop.url().indexOf('0000a1') !== -1)
+        })
+
+        describe('url()', function () {
 
           it('should generate a url based off of the correct resource', function () {
             var images = createUrlBuilder(darkroomUrl, darkroomSalt, imageWidgets, mixedContexts)

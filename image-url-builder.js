@@ -1,7 +1,6 @@
 module.exports = createUrlBuilder
 
 var createDarkroomUrlBuilder = require('darkroom-url-builder')
-  , slugg = require('slugg')
   , getImagesForContext = require('./get-images-for-context')
   , getCropUriByName = require('./get-crop-uri-by-name')
 
@@ -30,7 +29,15 @@ function createUrlBuilder(darkroomUrl, darkroomSalt, images, selectedContexts) {
           return 'Error: no "' + name + '" crop available for context "' + context + '"'
         }
 
-        var uri = getCropUriByName(image.crops, name)
+        var uri
+
+        if (name) {
+          uri = getCropUriByName(image.crops, name)
+        } else {
+          // if no crop was passed, use the original resource
+          uri = image.binaryUri
+        }
+
         if (uri) {
           builder.resource(uri)
           builder.filename(image.name)
