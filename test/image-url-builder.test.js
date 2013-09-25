@@ -1,34 +1,34 @@
 var assert = require('assert')
   , createUrlBuilder = require('../image-url-builder')
-  , getCropsForContext = require('../get-crops-for-context')
+  , getImagesForContext = require('../get-images-for-context')
   , getCropUriByName = require('../get-crop-uri-by-name')
   , imageWidgets = require('./fixtures/image-widgets')
   , mixedContexts = require('./fixtures/mixed-contexts')
 
 /* global describe, it */
 
-describe('getCropsForContext()', function () {
+describe('getImagesForContext()', function () {
 
   it('should get the crops for a context with a single selection', function () {
 
-    var crops = getCropsForContext(imageWidgets, mixedContexts, 'Thumbnail')
-    assert.equal(crops[0]._note, 'a1 crops')
-    assert.equal(crops.length, 1)
+    var images = getImagesForContext(imageWidgets, mixedContexts, 'Thumbnail')
+    assert.equal(images[0].crops._note, 'a1 crops')
+    assert.equal(images.length, 1)
 
   })
 
   it('should get the crops for a context with multiple selections', function () {
 
-    var crops = getCropsForContext(imageWidgets, mixedContexts, 'hero')
-    assert.equal(crops[0]._note, 'a2 crops')
-    assert.equal(crops[1]._note, 'a3 crops')
-    assert.equal(crops.length, 2)
+    var images = getImagesForContext(imageWidgets, mixedContexts, 'Hero')
+    assert.equal(images[0].crops._note, 'a2 crops')
+    assert.equal(images[1].crops._note, 'a3 crops')
+    assert.equal(images.length, 2)
 
   })
 
   it('should return an empty array for contexts that don\'t exist', function () {
-    var crops = getCropsForContext(imageWidgets, mixedContexts, 'nope')
-    assert.deepEqual(crops, [])
+    var images = getImagesForContext(imageWidgets, mixedContexts, 'nope')
+    assert.deepEqual(images, [])
   })
 
 })
@@ -65,7 +65,7 @@ describe('image url builder', function () {
       it('should return the correct number of images for the given context', function () {
         var images = createUrlBuilder(darkroomUrl, darkroomSalt, imageWidgets, mixedContexts)
         assert.equal(images.getImages('Thumbnail').length, 1)
-        assert.equal(images.getImages('hero').length, 2)
+        assert.equal(images.getImages('Hero').length, 2)
         assert.equal(images.getImages('nope').length, 0)
       })
 
@@ -103,7 +103,7 @@ describe('image url builder', function () {
             assert(/a1\-square/.test(image.crop('Square').constrain(100).url()))
             assert(/a1\-square/.test(image.crop('Square').constrain(324, 303).url()))
             assert(/a1\-square/.test(image.crop('Square').constrain(null, 800).url()))
-            images.getImages('hero').forEach(function (image, i) {
+            images.getImages('Hero').forEach(function (image, i) {
               if (i > 1) throw new Error('only expected 2 images')
               if (i === 0) {
                 assert(/a2\-square/.test(image.crop('Square').url()))
@@ -134,7 +134,12 @@ describe('image url builder', function () {
             assert.equal(image.crop('nope').url(), 'Error: no "nope" crop available for context "Thumbnail"')
           })
 
-          it('should include the filename in the URL')
+          it('should include and escape the filename in the URL', function () {
+            var images = createUrlBuilder(darkroomUrl, darkroomSalt, imageWidgets, mixedContexts)
+            assert(/\/a1\.jpg/.test(images.getImage('Thumbnail').crop('Square').url()))
+            assert(/\/a2\.jpg/.test(images.getImages('Hero')[0].crop('Square').url()))
+            assert(/\/a3\.jpg/.test(images.getImages('Hero')[1].crop('Square').url()))
+          })
 
         })
 
@@ -176,7 +181,7 @@ describe('image url builder', function () {
 
       it('should return the first result from getImages()', function () {
         var images = createUrlBuilder(darkroomUrl, darkroomSalt, imageWidgets, mixedContexts)
-        assert.equal(images.getImage('hero').crop('Square').url(), images.getImages('hero')[0].crop('Square').url())
+        assert.equal(images.getImage('Hero').crop('Square').url(), images.getImages('Hero')[0].crop('Square').url())
       })
 
     })

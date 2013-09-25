@@ -1,6 +1,6 @@
-module.exports = getCropsForContext
+module.exports = getImagesForContext
 
-function getCropsForContext(images, selectedContexts, context) {
+function getImagesForContext(images, selectedContexts, context) {
 
   var imageIds = selectedContexts[context]
     , crops = []
@@ -16,7 +16,7 @@ function getCropsForContext(images, selectedContexts, context) {
   imageIds.forEach(function (id) {
     images.some(function (image) {
       if (image._id === id) {
-        crops.push(image.crops)
+        crops.push(image)
         // Stop iterating because the image with `id` was found
         return true
       }

@@ -1,7 +1,8 @@
 module.exports = createUrlBuilder
 
 var createDarkroomUrlBuilder = require('darkroom-url-builder')
-  , getCropsForContext = require('./get-crops-for-context')
+  , slugg = require('slugg')
+  , getImagesForContext = require('./get-images-for-context')
   , getCropUriByName = require('./get-crop-uri-by-name')
 
 function createUrlBuilder(darkroomUrl, darkroomSalt, images, selectedContexts) {
@@ -15,7 +16,7 @@ function createUrlBuilder(darkroomUrl, darkroomSalt, images, selectedContexts) {
 
     // Map each image that is found for the given context
     // onto an object with which to build URLs
-    return getCropsForContext(images, selectedContexts, context).map(function (crops) {
+    return getImagesForContext(images, selectedContexts, context).map(function (image) {
 
       // Instantiate a darkroom URL builder
       var builder = darkroomUrlBuilder()
@@ -29,9 +30,10 @@ function createUrlBuilder(darkroomUrl, darkroomSalt, images, selectedContexts) {
           return 'Error: no "' + name + '" crop available for context "' + context + '"'
         }
 
-        var uri = getCropUriByName(crops, name)
+        var uri = getCropUriByName(image.crops, name)
         if (uri) {
           builder.resource(uri)
+          builder.filename(image.name)
           return { constrain: constrain, url: url }
         } else {
           // Slightly weird composition here, but this keeps the interface nice while
