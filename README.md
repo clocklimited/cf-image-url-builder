@@ -8,6 +8,17 @@ Build URLs for your cf entity's images
 
 ## Usage
 
+```
+var createImageUrlBuilder = require('cf-image-url-builder')
+var images = createImageUrlBuilder('http://dr.io', 'salty', [], {})
+
+images.getImages('Thumbnail').forEach(function (img) {
+  img.crop('Square').constrain().url()
+})
+
+images.getImage('Thumbnail').crop('Square').constrain(width, height).url()
+```
+
 ## Credits
 Built by developers at [Clock](http://clock.co.uk).
 
