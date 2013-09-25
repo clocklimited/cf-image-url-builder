@@ -1,0 +1,28 @@
+{ "author": "Ben Gourley"
+, "name": "cf-image-url-builder"
+, "description": "Build URLs for your cf entity's images"
+, "version": "0.0.1"
+, "tags": []
+, "repository":
+  { "type": "git"
+  , "url": "git@github.com:clocklimited/cf-image-url-builder"
+  }
+, "publishConfig": {
+    "registry":"http://npm.clockte.ch"
+  }
+, "main": ""
+, "scripts":
+  { "test": "./node_modules/.bin/pliers test"
+  }
+, "engines":
+  { "node": ">=0.8"
+  }
+, "dependencies":
+  {
+  }
+, "devDependencies":
+  { "mocha": "*"
+  , "should": "*"
+  , "pliers": "*"
+  }
+}
