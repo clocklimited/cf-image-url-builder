@@ -68,7 +68,7 @@ function createUrlBuilder(darkroomUrl, darkroomSalt, images, selectedContexts) {
       }
 
       // Expose just the crop function on each URL builder object
-      return { crop: crop }
+      return { crop: crop, properties: image }
 
     })
 

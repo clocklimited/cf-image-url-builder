@@ -69,11 +69,12 @@ describe('image url builder', function () {
         assert.equal(images.getImages('nope').length, 0)
       })
 
-      it('should return an array of objects with a single function: crop()', function () {
+      it('should return an array of objects with a crop() function and a properties property', function () {
         var images = createUrlBuilder(darkroomUrl, darkroomSalt, imageWidgets, mixedContexts)
           , image = images.getImage('Thumbnail')
-        assert.deepEqual(Object.keys(image), [ 'crop' ])
+        assert.deepEqual(Object.keys(image), [ 'crop', 'properties' ])
         assert.equal(typeof image.crop, 'function')
+        assert.equal(image.properties, imageWidgets[0])
       })
 
       describe('crop()', function () {
