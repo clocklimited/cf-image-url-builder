@@ -2,7 +2,7 @@
   "author": "Ben Gourley",
   "name": "cf-image-url-builder",
   "description": "Build URLs for your cf entity's images",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "tags": [],
   "repository": {
     "type": "git",
