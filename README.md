@@ -36,6 +36,10 @@ images.getImage('Thumbnail').crop('Square').constrain(300, 200).url()
 
 TODO
 
+## Tests
+
+Run the tests with `npm test` and generate coverage report with `npm test --coverage`.
+
 ## Credits
 Built by developers at [Clock](http://clock.co.uk).
 

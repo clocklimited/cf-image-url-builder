@@ -13,7 +13,7 @@
   },
   "main": "image-url-builder.js",
   "scripts": {
-    "test": "./node_modules/.bin/mocha -R spec"
+    "test": "./node_modules/.bin/istanbul test ./node_modules/.bin/_mocha -- -R spec"
   },
   "engines": {
     "node": ">=0.8"
@@ -23,6 +23,7 @@
   },
   "devDependencies": {
     "mocha": "*",
-    "pliers": "*"
+    "pliers": "*",
+    "istanbul": "~0.1.44"
   }
 }
