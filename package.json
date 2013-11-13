@@ -19,7 +19,7 @@
     "node": ">=0.8"
   },
   "dependencies": {
-    "darkroom-url-builder": "0.1.4"
+    "darkroom-url-builder": "~1.0.1"
   },
   "devDependencies": {
     "mocha": "*",
