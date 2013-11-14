@@ -2,6 +2,21 @@
 
 Build URLs for your cf entity's images
 
+**From v1.0.0 this module will be incompatible with old-style cf entities that
+store contexts at `entity.crops`. Use the `pre-v1.0.0` branch or some version < 1.0.0
+if your entities do that. From now on, this module assumes that context selection is annotated
+on each image object itself, e.g:**
+
+```js
+{ images:
+  [ { name: 'image.jpeg'
+    /* other properties omitted for brevity */
+    , selectedContexts: [ 'Main', 'Thumbnail' ]
+    }
+  ]
+}
+```
+
 ## Installation
 
 ```
