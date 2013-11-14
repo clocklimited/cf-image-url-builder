@@ -3,7 +3,6 @@ var assert = require('assert')
   , getImagesForContext = require('../get-images-for-context')
   , getCropUriByName = require('../get-crop-uri-by-name')
   , imageWidgets = require('./fixtures/image-widgets')
-  , mixedContexts = require('./fixtures/mixed-contexts')
 
 /* global describe, it */
 
@@ -11,7 +10,7 @@ describe('getImagesForContext()', function () {
 
   it('should get the crops for a context with a single selection', function () {
 
-    var images = getImagesForContext(imageWidgets, mixedContexts, 'Thumbnail')
+    var images = getImagesForContext(imageWidgets, 'Thumbnail')
     assert.equal(images[0].crops._note, 'a1 crops')
     assert.equal(images.length, 1)
 
@@ -19,7 +18,7 @@ describe('getImagesForContext()', function () {
 
   it('should get the crops for a context with multiple selections', function () {
 
-    var images = getImagesForContext(imageWidgets, mixedContexts, 'Hero')
+    var images = getImagesForContext(imageWidgets, 'Hero')
     assert.equal(images[0].crops._note, 'a2 crops')
     assert.equal(images[1].crops._note, 'a3 crops')
     assert.equal(images.length, 2)
@@ -27,7 +26,7 @@ describe('getImagesForContext()', function () {
   })
 
   it('should return an empty array for contexts that don\'t exist', function () {
-    var images = getImagesForContext(imageWidgets, mixedContexts, 'nope')
+    var images = getImagesForContext(imageWidgets, 'nope')
     assert.deepEqual(images, [])
   })
 
@@ -63,14 +62,14 @@ describe('image url builder', function () {
     describe('getImages()', function () {
 
       it('should return the correct number of images for the given context', function () {
-        var images = createUrlBuilder(darkroomUrl, darkroomSalt, imageWidgets, mixedContexts)
+        var images = createUrlBuilder(darkroomUrl, darkroomSalt, imageWidgets)
         assert.equal(images.getImages('Thumbnail').length, 1)
         assert.equal(images.getImages('Hero').length, 2)
         assert.equal(images.getImages('nope').length, 0)
       })
 
       it('should return an array of objects with a crop() function and a properties property', function () {
-        var images = createUrlBuilder(darkroomUrl, darkroomSalt, imageWidgets, mixedContexts)
+        var images = createUrlBuilder(darkroomUrl, darkroomSalt, imageWidgets)
           , image = images.getImage('Thumbnail')
         assert.deepEqual(Object.keys(image), [ 'crop', 'properties' ])
         assert.equal(typeof image.crop, 'function')
@@ -80,7 +79,7 @@ describe('image url builder', function () {
       describe('crop()', function () {
 
         it('should return an object with two functions: constrain() and url()', function () {
-          var images = createUrlBuilder(darkroomUrl, darkroomSalt, imageWidgets, mixedContexts)
+          var images = createUrlBuilder(darkroomUrl, darkroomSalt, imageWidgets)
             , crop = images.getImage('Thumbnail').crop('Square')
           assert.deepEqual(Object.keys(crop), [ 'constrain', 'url' ])
           assert.equal(typeof crop.constrain, 'function')
@@ -88,7 +87,7 @@ describe('image url builder', function () {
         })
 
         it('should still return an object even if no crop exists', function () {
-          var images = createUrlBuilder(darkroomUrl, darkroomSalt, imageWidgets, mixedContexts)
+          var images = createUrlBuilder(darkroomUrl, darkroomSalt, imageWidgets)
             , crop = images.getImage('Thumbnail').crop('nope')
           assert.deepEqual(Object.keys(crop), [ 'constrain', 'url' ])
           assert.equal(typeof crop.constrain, 'function')
@@ -96,7 +95,7 @@ describe('image url builder', function () {
         })
 
         it('should use the original un-cropped resource if no crop name is passed', function () {
-          var images = createUrlBuilder(darkroomUrl, darkroomSalt, imageWidgets, mixedContexts)
+          var images = createUrlBuilder(darkroomUrl, darkroomSalt, imageWidgets)
             , crop = images.getImage('Thumbnail').crop()
 
           assert(crop.url().indexOf('0000a1') !== -1)
@@ -105,7 +104,7 @@ describe('image url builder', function () {
         describe('url()', function () {
 
           it('should generate a url based off of the correct resource', function () {
-            var images = createUrlBuilder(darkroomUrl, darkroomSalt, imageWidgets, mixedContexts)
+            var images = createUrlBuilder(darkroomUrl, darkroomSalt, imageWidgets)
               , image = images.getImage('Thumbnail')
             assert(/a1\-square/.test(image.crop('Square').url()))
             assert(/a1\-square/.test(image.crop('Square').constrain(100).url()))
@@ -129,7 +128,7 @@ describe('image url builder', function () {
           })
 
           it('should not throw errors', function () {
-            var images = createUrlBuilder(darkroomUrl, darkroomSalt, imageWidgets, mixedContexts)
+            var images = createUrlBuilder(darkroomUrl, darkroomSalt, imageWidgets)
               , image = images.getImage('Thumbnail')
             assert.doesNotThrow(function () {
               image.crop('nope').url()
@@ -137,13 +136,13 @@ describe('image url builder', function () {
           })
 
           it('should return an error as a string', function () {
-            var images = createUrlBuilder(darkroomUrl, darkroomSalt, imageWidgets, mixedContexts)
+            var images = createUrlBuilder(darkroomUrl, darkroomSalt, imageWidgets)
               , image = images.getImage('Thumbnail')
             assert.equal(image.crop('nope').url(), 'Error: no "nope" crop available for context "Thumbnail"')
           })
 
           it('should include and escape the filename in the URL', function () {
-            var images = createUrlBuilder(darkroomUrl, darkroomSalt, imageWidgets, mixedContexts)
+            var images = createUrlBuilder(darkroomUrl, darkroomSalt, imageWidgets)
             assert(/\/a1\.jpg/.test(images.getImage('Thumbnail').crop('Square').url()))
             assert(/\/a2\.jpg/.test(images.getImages('Hero')[0].crop('Square').url()))
             assert(/\/a3\.jpg/.test(images.getImages('Hero')[1].crop('Square').url()))
@@ -154,7 +153,7 @@ describe('image url builder', function () {
         describe('constrain()', function () {
 
           it('should have an effect on the resulting url', function () {
-            var images = createUrlBuilder(darkroomUrl, darkroomSalt, imageWidgets, mixedContexts)
+            var images = createUrlBuilder(darkroomUrl, darkroomSalt, imageWidgets)
             assert(/\/300\//.test(images.getImage('Thumbnail').crop('Square').constrain(300).url()))
             assert(/\/300\//.test(images.getImage('Thumbnail').crop('Square').constrain(null, 300).url()))
             assert(/\/123\//.test(images.getImage('Thumbnail').crop('Square').constrain(123, 456).url()))
@@ -162,7 +161,7 @@ describe('image url builder', function () {
           })
 
           it('should return an object with a single function: url()', function () {
-            var images = createUrlBuilder(darkroomUrl, darkroomSalt, imageWidgets, mixedContexts)
+            var images = createUrlBuilder(darkroomUrl, darkroomSalt, imageWidgets)
 
             var toTest =
               [ images.getImage('Thumbnail').crop('Square').constrain()
@@ -188,7 +187,7 @@ describe('image url builder', function () {
     describe('getImage()', function () {
 
       it('should return the first result from getImages()', function () {
-        var images = createUrlBuilder(darkroomUrl, darkroomSalt, imageWidgets, mixedContexts)
+        var images = createUrlBuilder(darkroomUrl, darkroomSalt, imageWidgets)
         assert.equal(images.getImage('Hero').crop('Square').url(), images.getImages('Hero')[0].crop('Square').url())
       })
 

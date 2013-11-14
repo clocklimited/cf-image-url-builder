@@ -4,7 +4,7 @@ var createDarkroomUrlBuilder = require('darkroom-url-builder')
   , getImagesForContext = require('./get-images-for-context')
   , getCropUriByName = require('./get-crop-uri-by-name')
 
-function createUrlBuilder(darkroomUrl, darkroomSalt, images, selectedContexts) {
+function createUrlBuilder(darkroomUrl, darkroomSalt, images) {
 
   var darkroomUrlBuilder = createDarkroomUrlBuilder(darkroomUrl, darkroomSalt)
 
@@ -15,7 +15,7 @@ function createUrlBuilder(darkroomUrl, darkroomSalt, images, selectedContexts) {
 
     // Map each image that is found for the given context
     // onto an object with which to build URLs
-    return getImagesForContext(images, selectedContexts, context).map(function (image) {
+    return getImagesForContext(images, context).map(function (image) {
 
       // Instantiate a darkroom URL builder
       var builder = darkroomUrlBuilder()

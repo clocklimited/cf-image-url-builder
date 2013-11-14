@@ -33,17 +33,14 @@ Instantiate like so:
 
 ```js
 var createImageUrlBuilder = require('cf-image-url-builder')
-var urlBuilder = createImageUrlBuilder('http://dr.io', 'darkroom-key', images, contexts)
+var urlBuilder = createImageUrlBuilder('http://dr.io', 'darkroom-key', images)
 ```
 
 Where:
 - `images` is an array of raw image widget models (e.g. on the backend `article.images.widgets`,
 and on the frontend `article.get('images').widgets.map(function (widget) { return widget.toJSON() })`)
-- `contexts` is an object that represents which image widget model is chosen for each context (e.g. on
-the backend this is `article.crops` and on the frontend `article.get('crops')`)
 
 ## Examples
-
 
 ### Article list with thumbnails
 
@@ -58,7 +55,7 @@ function render() {
   var articles = [...] // Get the articles somehow
 
   articles.forEach(function (article) {
-    var urlBuilder = createImageUrlBuilder('http://dr.io', 'darkroom-key', images, contexts)
+    var urlBuilder = createImageUrlBuilder('http://dr.io', 'darkroom-key', images)
       , image = urlBuilder.getImage('Thumbnail')
 
     if (image) {
@@ -99,7 +96,7 @@ The full API docs follow. Unless you need to figure something tricky out, it's b
 to look at the examples. The API was designed to chain well, and for that reason, it
 looks a lot more complex than it needs to be in this formal view.
 
-### var urlBuilder = createUrlBuilder(darkroomUrl, darkroomKey, imageWidgets, selectedContexts)
+### var urlBuilder = createUrlBuilder(darkroomUrl, darkroomKey, imageWidgets)
 
 Creates a URL builder instance from a cf entity. All arguments are required.
 
