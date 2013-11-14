@@ -2,6 +2,9 @@
 
 Build URLs for your cf entity's images
 
+**This is the pre-v1.0.0 branch. Use this if your cf entities store their image contexts at
+`entity.crops`. Otherwise you want the master branch (or some version > 1.0.0).**
+
 ## Installation
 
 ```
