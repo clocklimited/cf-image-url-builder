@@ -13,7 +13,11 @@
   },
   "main": "image-url-builder.js",
   "scripts": {
-    "test": "./node_modules/.bin/istanbul test ./node_modules/.bin/_mocha -- -R spec"
+    "lint": "./node_modules/.bin/jshint . --reporter=./node_modules/jshint-full-path/index.js",
+    "pretest": "npm run-script lint",
+    "test": "./node_modules/.bin/istanbul cover ./node_modules/.bin/_mocha -- -R spec",
+    "posttest": "./node_modules/.bin/istanbul check-coverage && rm -rf coverage",
+    "prepublish": "npm test && npm prune"
   },
   "engines": {
     "node": ">=0.8"
@@ -24,6 +28,8 @@
   "devDependencies": {
     "mocha": "*",
     "pliers": "*",
-    "istanbul": "~0.1.44"
+    "istanbul": "~0.1.44",
+    "jshint": "~2.3.0",
+    "jshint-full-path": "~0.1.0"
   }
 }
