@@ -34,6 +34,8 @@ Instantiate like so:
 ```js
 var createImageUrlBuilder = require('cf-image-url-builder')
 var urlBuilder = createImageUrlBuilder('http://dr.io', 'darkroom-key', images)
+// or provide your own darkroom url builder
+var urlBuilder = createImageUrlBuilder(req.darkroomUrlBuilder, images)
 ```
 
 Where:

@@ -4,9 +4,18 @@ var createDarkroomUrlBuilder = require('darkroom-url-builder')
   , getImagesForContext = require('./get-images-for-context')
   , getCropUriByName = require('./get-crop-uri-by-name')
 
-function createUrlBuilder(darkroomUrl, darkroomSalt, images) {
+function createUrlBuilder() {
 
-  var darkroomUrlBuilder = createDarkroomUrlBuilder(darkroomUrl, darkroomSalt)
+  var darkroomUrlBuilder
+    , images
+
+  if (arguments.length === 3) {
+    darkroomUrlBuilder = createDarkroomUrlBuilder(arguments[0], arguments[1])
+    images = arguments[2]
+  } else {
+    darkroomUrlBuilder = arguments[0]
+    images = arguments[1]
+  }
 
   /*
    * Build image url builder objects for all images available with the given `context`

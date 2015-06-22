@@ -162,14 +162,13 @@ describe('image url builder', function () {
 
           it('should return an object with a single function: url()', function () {
             var images = createUrlBuilder(darkroomUrl, darkroomSalt, imageWidgets)
-
-            var toTest =
-              [ images.getImage('Thumbnail').crop('Square').constrain()
-              , images.getImage('Thumbnail').crop('Square').constrain(100)
-              , images.getImage('Thumbnail').crop('Square').constrain(null, 100)
-              , images.getImage('Thumbnail').crop('Square').constrain(100, 100)
-              , images.getImage('Thumbnail').crop('nope').constrain(100)
-              ]
+              , toTest =
+                [ images.getImage('Thumbnail').crop('Square').constrain()
+                , images.getImage('Thumbnail').crop('Square').constrain(100)
+                , images.getImage('Thumbnail').crop('Square').constrain(null, 100)
+                , images.getImage('Thumbnail').crop('Square').constrain(100, 100)
+                , images.getImage('Thumbnail').crop('nope').constrain(100)
+                ]
 
             toTest.forEach(function (obj) {
               assert.deepEqual(Object.keys(obj), [ 'url' ])
@@ -189,6 +188,18 @@ describe('image url builder', function () {
       it('should return the first result from getImages()', function () {
         var images = createUrlBuilder(darkroomUrl, darkroomSalt, imageWidgets)
         assert.equal(images.getImage('Hero').crop('Square').url(), images.getImages('Hero')[0].crop('Square').url())
+      })
+
+    })
+
+    describe('providing an existing url builder', function () {
+
+      it('should use an existing urlBuilder if provided', function (done) {
+        function mockUrlBuilder() {
+          done()
+          return {}
+        }
+        createUrlBuilder(mockUrlBuilder, imageWidgets).getImage('Thumbnail')
       })
 
     })
