@@ -202,6 +202,10 @@ describe('image url builder', function () {
         createUrlBuilder(mockUrlBuilder, imageWidgets).getImage('Thumbnail')
       })
 
+      it('should throw an error if incorrect argument length is provided', function () {
+        assert.throws(function () { createUrlBuilder(1, 2, 3, 4) })
+      })
+
     })
 
   })

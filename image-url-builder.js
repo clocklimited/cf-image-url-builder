@@ -12,9 +12,11 @@ function createUrlBuilder() {
   if (arguments.length === 3) {
     darkroomUrlBuilder = createDarkroomUrlBuilder(arguments[0], arguments[1])
     images = arguments[2]
-  } else {
+  } else if (arguments.length === 2) {
     darkroomUrlBuilder = arguments[0]
     images = arguments[1]
+  } else {
+    throw new Error('createUrlBuilder() called with invalid arguments length')
   }
 
   /*
