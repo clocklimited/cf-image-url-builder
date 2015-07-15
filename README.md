@@ -62,7 +62,7 @@ function render() {
 
     if (image) {
       article.thumbnail =
-        { url: image.crop('Landscape').constrain(300)
+        { url: image.crop('Landscape').constrain(300).url()
         , caption: image.properties.name
         }
     }
