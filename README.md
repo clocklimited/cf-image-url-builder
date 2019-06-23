@@ -1,5 +1,7 @@
 # cf-image-url-builder
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/clocklimited/cf-image-url-builder.svg)](https://greenkeeper.io/)
+
 Build URLs for your cf entity's images
 
 **From v1.0.0 this module will be incompatible with old-style cf entities that
