@@ -28,8 +28,8 @@
   "devDependencies": {
     "mocha": "*",
     "pliers": "*",
-    "istanbul": "~0.1.44",
-    "jshint": "~2.3.0",
-    "jshint-full-path": "~0.1.0"
+    "istanbul": "~0.4.5",
+    "jshint": "~2.10.2",
+    "jshint-full-path": "~1.1.1"
   }
 }
