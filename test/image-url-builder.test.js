@@ -30,6 +30,19 @@ describe('getImagesForContext()', function () {
     assert.deepEqual(images, [])
   })
 
+  it('should return an empty array when there are no images', function () {
+    var images = getImagesForContext(null, '')
+    assert.deepEqual(images, [])
+  })
+
+  it('should not error if any image doesn’t have a selectedContext', function () {
+    getImagesForContext([], 'test')
+  })
+
+  it('should return an empty array if no images have a selectedContext', function () {
+    var images = getImagesForContext([ {}, {}, {} ], 'test')
+    assert.deepEqual(images, [])
+  })
 })
 
 describe('getCropUriByName()', function () {
@@ -44,6 +57,10 @@ describe('getCropUriByName()', function () {
     assert.equal(uri, undefined)
   })
 
+  it('should return undefined if there is no crops', function () {
+    var uri = getCropUriByName(null, 'nope')
+    assert.equal(uri, undefined)
+  })
 })
 
 describe('image url builder', function () {
