@@ -30,15 +30,12 @@ function createUrlBuilder() {
 
       // Instantiate a darkroom URL builder
       var builder = darkroomUrlBuilder()
-
+      var methods = { constrain: constrain, url: url, mode: mode }
+      var error
       /*
        * Get the crop by the given `name`
        */
       function crop(name) {
-
-        function error() {
-          return 'Error: no "' + name + '" crop available for context "' + context + '"'
-        }
 
         var uri
 
@@ -52,14 +49,13 @@ function createUrlBuilder() {
         if (uri) {
           builder.resource(uri)
           builder.filename(image.name)
-          return { constrain: constrain, url: url }
         } else {
-          // Slightly weird composition here, but this keeps the interface nice while
-          // deferrring error presentation until .url() function is called (thrown errors
-          // are not desirable as this is designed for use within a template).
-          return { constrain: function () { return { url: error } }, url: error }
+          // Only error on .url() to avoid a single missing image stop
+          // a template from rendering
+          error = 'Error: no "' + name + '" crop available for context "' + context + '"'
         }
 
+        return methods
       }
 
       /*
@@ -68,13 +64,22 @@ function createUrlBuilder() {
       function constrain(width, height) {
         if (width) builder.width(width)
         if (height) builder.height(height)
-        return { url: url }
+        return methods
+      }
+
+      /*
+       * Set the resize mode
+       */
+      function mode(modeType) {
+        if (modeType) builder.mode(modeType)
+        return methods
       }
 
       /*
        * Get the URL builder to build the URL
        */
       function url() {
+        if (error) return error
         return builder.url()
       }
 

@@ -130,6 +130,10 @@ Generate a url for the original image.
 
 Apply the `width` or `height` constrains to the crop. Both are optional.
 
+### constrained.mode('cover')
+
+Set the crop mode.
+
 ### constrained.url()
 
 Generate a url for the constrained image.
