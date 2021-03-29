@@ -205,17 +205,27 @@ describe('image url builder', function () {
           it('should have an effect on the resulting url', function () {
             var images = createUrlBuilder(darkroomUrl, darkroomSalt, imageWidgets)
             assert(/\/pad\//.test(images.getImage('Thumbnail').crop('Square').constrain(300, 100).mode('pad').url()))
-            assert(/\/cover\//.test(images.getImage('Thumbnail').crop('Square').constrain(100, 300).mode('cover').url()))
+            assert(
+              /\/cover\//.test(images.getImage('Thumbnail').crop('Square').constrain(100, 300).mode('cover').url())
+            )
             assert(/\/fit\//.test(images.getImage('Thumbnail').crop('Square').constrain(123, 456).mode('fit').url()))
-            assert(/\/stretch\//.test(images.getImage('Thumbnail').crop('Square').constrain(123, 456).mode('stretch').url()))
+            assert(
+              /\/stretch\//.test(images.getImage('Thumbnail').crop('Square').constrain(123, 456).mode('stretch').url())
+            )
           })
 
-          it('should not have an effect on the resulting url when either height or width is not constrained', function () {
-            var images = createUrlBuilder(darkroomUrl, darkroomSalt, imageWidgets)
-            assert(!(/\/pad\//.test(images.getImage('Thumbnail').crop('Square').constrain(300).mode('pad').url())))
-            assert(!(/\/cover\//.test(images.getImage('Thumbnail').crop('Square').constrain(null, 300).mode('cover').url())))
-            assert(!(/\/fit\//.test(images.getImage('Thumbnail').crop('Square').mode('fit').url())))
-          })
+          it('should not have an effect on the resulting url when either height or width is not constrained'
+            , function () {
+              var images = createUrlBuilder(darkroomUrl, darkroomSalt, imageWidgets)
+              assert(!(/\/pad\//.test(images.getImage('Thumbnail').crop('Square').constrain(300).mode('pad').url())))
+              assert(
+                !(/\/cover\//.test(
+                  images.getImage('Thumbnail').crop('Square').constrain(null, 300).mode('cover').url())
+                )
+              )
+              assert(!(/\/fit\//.test(images.getImage('Thumbnail').crop('Square').mode('fit').url())))
+            }
+          )
 
           it('should return an object with a three functions: constrain(), mode() & url()', function () {
             var images = createUrlBuilder(darkroomUrl, darkroomSalt, imageWidgets)
