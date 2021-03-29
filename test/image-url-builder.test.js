@@ -95,19 +95,21 @@ describe('image url builder', function () {
 
       describe('crop()', function () {
 
-        it('should return an object with two functions: constrain() and url()', function () {
+        it('should return an object with three functions: constrain(), mode() and url()', function () {
           var images = createUrlBuilder(darkroomUrl, darkroomSalt, imageWidgets)
             , crop = images.getImage('Thumbnail').crop('Square')
-          assert.deepEqual(Object.keys(crop), [ 'constrain', 'url' ])
+          assert.deepEqual(Object.keys(crop), [ 'constrain', 'url', 'mode' ])
           assert.equal(typeof crop.constrain, 'function')
+          assert.equal(typeof crop.mode, 'function')
           assert.equal(typeof crop.url, 'function')
         })
 
         it('should still return an object even if no crop exists', function () {
           var images = createUrlBuilder(darkroomUrl, darkroomSalt, imageWidgets)
             , crop = images.getImage('Thumbnail').crop('nope')
-          assert.deepEqual(Object.keys(crop), [ 'constrain', 'url' ])
+          assert.deepEqual(Object.keys(crop), [ 'constrain', 'url', 'mode' ])
           assert.equal(typeof crop.constrain, 'function')
+          assert.equal(typeof crop.mode, 'function')
           assert.equal(typeof crop.url, 'function')
         })
 
@@ -177,7 +179,7 @@ describe('image url builder', function () {
             assert(/\/456\//.test(images.getImage('Thumbnail').crop('Square').constrain(123, 456).url()))
           })
 
-          it('should return an object with a single function: url()', function () {
+          it('should return an object with a three functions: constrain(), mode() & url()', function () {
             var images = createUrlBuilder(darkroomUrl, darkroomSalt, imageWidgets)
               , toTest =
                 [ images.getImage('Thumbnail').crop('Square').constrain()
@@ -188,7 +190,9 @@ describe('image url builder', function () {
                 ]
 
             toTest.forEach(function (obj) {
-              assert.deepEqual(Object.keys(obj), [ 'url' ])
+              assert.deepEqual(Object.keys(obj), [ 'constrain', 'url', 'mode' ])
+              assert.equal(typeof obj.constrain, 'function')
+              assert.equal(typeof obj.mode, 'function')
               assert.equal(typeof obj.url, 'function')
             })
 
@@ -196,6 +200,40 @@ describe('image url builder', function () {
 
         })
 
+        describe('mode()', function () {
+
+          it('should have an effect on the resulting url', function () {
+            var images = createUrlBuilder(darkroomUrl, darkroomSalt, imageWidgets)
+            assert(/\/pad\//.test(images.getImage('Thumbnail').crop('Square').constrain(300, 100).mode('pad').url()))
+            assert(/\/cover\//.test(images.getImage('Thumbnail').crop('Square').constrain(100, 300).mode('cover').url()))
+            assert(/\/fit\//.test(images.getImage('Thumbnail').crop('Square').constrain(123, 456).mode('fit').url()))
+            assert(/\/stretch\//.test(images.getImage('Thumbnail').crop('Square').constrain(123, 456).mode('stretch').url()))
+          })
+
+          it('should not have an effect on the resulting url when either height or width is not constrained', function () {
+            var images = createUrlBuilder(darkroomUrl, darkroomSalt, imageWidgets)
+            assert(!(/\/pad\//.test(images.getImage('Thumbnail').crop('Square').constrain(300).mode('pad').url())))
+            assert(!(/\/cover\//.test(images.getImage('Thumbnail').crop('Square').constrain(null, 300).mode('cover').url())))
+            assert(!(/\/fit\//.test(images.getImage('Thumbnail').crop('Square').mode('fit').url())))
+          })
+
+          it('should return an object with a three functions: constrain(), mode() & url()', function () {
+            var images = createUrlBuilder(darkroomUrl, darkroomSalt, imageWidgets)
+              , toTest =
+                [ images.getImage('Thumbnail').crop('Square').mode()
+                , images.getImage('Thumbnail').crop('Square').mode('fit')
+                ]
+
+            toTest.forEach(function (obj) {
+              assert.deepEqual(Object.keys(obj), [ 'constrain', 'url', 'mode' ])
+              assert.equal(typeof obj.constrain, 'function')
+              assert.equal(typeof obj.mode, 'function')
+              assert.equal(typeof obj.url, 'function')
+            })
+
+          })
+
+        })
       })
 
     })
